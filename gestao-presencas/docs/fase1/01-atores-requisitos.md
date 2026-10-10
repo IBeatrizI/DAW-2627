@@ -11,7 +11,6 @@
 
 Esta secção caracteriza os quatro atores identificados na proposta do projeto e reúne os requisitos não funcionais relevantes para a aplicação. A caracterização distingue os objetivos, as permissões previstas e as interações diretas ou indiretas de cada ator.
 
-> **Nota de âmbito:** as permissões identificadas como propostas devem ser confirmadas pelo grupo. Não devem ser tratadas como requisitos explícitos do enunciado sem validação.
 
 ## 2. Caracterização dos atores
 
@@ -70,6 +69,7 @@ Utilizador responsável pela consulta e análise dos dados de assiduidade, bem c
 - Não alterar os registos de presenças efetuados pelos docentes.
 - Os indicadores de assiduidade devem basear-se nos históricos semanais produzidos pelo UC3.
 - O acesso aos dados deve respeitar as permissões atribuídas ao seu perfil.
+- **O acesso aos dados restringe-se exclusivamente aos cursos da escola à qual o técnico está vinculado (não tem acesso global ao politécnico).**
 
 **Interações**
 - **Diretas:** consulta e análise dos registos de assiduidade (UC4) e análise dos dados de utilização do sistema (UC5).
@@ -91,7 +91,7 @@ Diretor de uma escola ou membro da Presidência, que utiliza os indicadores de a
 - Analisar possíveis relações entre assiduidade e sucesso académico.
 
 **Permissões previstas**
-- Consultar tabelas e gráficos de assiduidade.
+- Consultar tabelas e gráficos de assiduidade referentes à escola pela qual é responsável.
 - Aplicar filtros de consulta por escola, curso, unidade curricular, ano curricular e ano letivo, de acordo com o âmbito de acesso atribuído.
 - Consultar indicadores consolidados a partir dos históricos semanais.
 
@@ -99,6 +99,7 @@ Diretor de uma escola ou membro da Presidência, que utiliza os indicadores de a
 - Não deve criar pautas nem registar ou alterar presenças.
 - Não deve encerrar semanas letivas.
 - Não necessita de acesso ao painel de Data Analytics, uma vez que a proposta atribui o UC5 ao Técnico do Gabinete de Qualidade.
+- **O acesso é limitado apenas à escola pela qual é responsável.**
 
 **Interações**
 - **Diretas:** consulta e análise dos registos de assiduidade (UC4).
@@ -148,28 +149,32 @@ A tabela distingue requisitos que decorrem diretamente da proposta/enunciado de 
 | ID | Categoria | Requisito | Origem/estado |
 |---|---|---|---|
 | RNF01 | Responsividade | A interface deve adaptar-se a computadores de secretária, portáteis, tablets e smartphones. | Explícito no enunciado |
-| RNF02 | Usabilidade | O registo de presenças deve ser simples e prático durante as aulas, incluindo em ecrãs pequenos. | Derivado do contexto; validar |
-| RNF03 | Segurança | O sistema deve autenticar os utilizadores antes de permitir o acesso às funcionalidades protegidas. | Previsto na proposta/enunciado |
-| RNF04 | Controlo de acesso | As funcionalidades e os dados acessíveis devem depender do perfil e das responsabilidades do utilizador. | Proposta a validar |
-| RNF05 | Integridade dos dados | Os registos devem manter-se consistentes; o encerramento semanal deve proteger os dados contra alterações acidentais. | Derivado da descrição do UC3 |
-| RNF06 | Suporte a múltiplos contextos | A aplicação deve suportar várias escolas, cursos, unidades curriculares, anos curriculares e anos letivos. | Explícito no enunciado/proposta |
-| RNF07 | Compatibilidade | A aplicação deve funcionar em navegadores modernos nos dispositivos suportados. | Proposta a validar |
-| RNF08 | Desempenho | As operações de consulta, registo e apresentação de indicadores devem ter tempos de resposta adequados à utilização normal. | Proposta a validar; sem limite numérico definido |
-| RNF09 | Fiabilidade | O sistema deve reduzir o risco de perda de dados durante a criação, edição e encerramento das pautas. | Proposta a validar |
-| RNF10 | Privacidade | O acesso aos dados pessoais e académicos deve limitar-se às necessidades e permissões de cada perfil. | Proposta a validar |
-| RNF11 | Recolha de métricas | O sistema deve recolher dados de utilização, incluindo páginas visualizadas e duração das visitas, para suportar o UC5. | Previsto no enunciado/proposta |
-| RNF12 | Arquitetura e manutenibilidade | A solução deve seguir a arquitetura MVC e disponibilizar uma API REST para os dados e regras de negócio. | Explícito no enunciado/proposta |
+| RNF02 | Usabilidade | O registo de presenças deve ser simples e prático durante as aulas, incluindo em ecrãs pequenos. | Validado |
+| RNF03 | Segurança | O sistema deve autenticar os utilizadores, utilizar *hashing* seguro para palavras-passe e gerir a expiração automática de sessões inativas. | Validado (Atualizado) |
+| RNF04 | Controlo de acesso | O Dirigente e o Técnico de Qualidade têm o seu acesso estritamente limitado aos dados da Escola à qual pertencem. | Validado (Atualizado) |
+| RNF05 | Integridade dos dados | O encerramento semanal aplica um bloqueio absoluto e irreversível aos registos de assiduidade. | Validado (Atualizado) |
+| RNF06 | Suporte a múltiplos contextos | A aplicação deve suportar várias escolas, cursos, unidades curriculares, anos curriculares e anos letivos. | Explícito no enunciado |
+| RNF07 | Compatibilidade | A aplicação (*frontend* HTML/CSS) deve ser *cross-browser*, garantindo total compatibilidade com os navegadores modernos. | Validado (Atualizado) |
+| RNF08 | Desempenho | O tempo de resposta da API não deve exceder 500ms e as vistas/tabelas devem ser renderizadas em menos de 2 segundos. | Validado (Atualizado) |
+| RNF09 | Fiabilidade | O sistema deve reduzir o risco de perda de dados durante a criação, edição e encerramento das pautas. | Validado |
+| RNF10 | Privacidade | O acesso aos dados pessoais e académicos deve limitar-se às necessidades e permissões de cada perfil. | Validado |
+| RNF11 | Recolha de métricas | O sistema deve recolher dados de utilização, incluindo páginas visualizadas e duração das visitas, para suportar o UC5. | Explícito no enunciado |
+| RNF12 | Arquitetura e manutenibilidade | A solução deve seguir a arquitetura MVC e disponibilizar uma API REST para os dados e regras de negócio. | Explícito no enunciado |
 
-## 5. Pontos por validar 
+## 5. Decisões de Projeto (Validadas)
 
 
 1. **Âmbito de acesso do Dirigente:** pode consultar dados de todas as escolas ou apenas da escola pela qual é responsável?
 2. **Âmbito de acesso do Técnico de Qualidade:** terá acesso global aos dados de todas as escolas e cursos?
+- O Dirigente e o Técnico de Qualidade apenas visualizam os dados e cursos pertencentes à sua respetiva escola.
 3. **Semanas encerradas:** o bloqueio é absoluto ou existe um procedimento autorizado para corrigir erros excecionais?
+- O bloqueio da semana no UC3 é absoluto e irreversível (não há edições excecionais).
 4. **Requisitos de desempenho:** será necessário definir limites mensuráveis para o tempo de resposta?
+- Definido limite máximo de 500ms para a resposta dos *endpoints* da API.
 5. **Segurança:** serão definidos requisitos adicionais para palavras-passe, sessões e registo de operações críticas?
+- A aplicação exigirá o processamento seguro de palavras-passe (*hashing*) e *timeouts* para sessões inativas.
 6. **Compatibilidade:** quais os navegadores que serão considerados no âmbito do projeto?
-
+- A compatibilidade focada nos padrões HTML/CSS abrangendo todos os navegadores web modernos (Chrome, Firefox, Safari, Edge).
 
 ## 6. Texto de síntese
 
