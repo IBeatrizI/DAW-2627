@@ -69,7 +69,7 @@ Utilizador responsável pela consulta e análise dos dados de assiduidade, bem c
 - Não alterar os registos de presenças efetuados pelos docentes.
 - Os indicadores de assiduidade devem basear-se nos históricos semanais produzidos pelo UC3.
 - O acesso aos dados deve respeitar as permissões atribuídas ao seu perfil.
-- **O acesso aos dados restringe-se exclusivamente aos cursos da escola à qual o técnico está vinculado (não tem acesso global ao politécnico).**
+- **O acesso aos dados restringe-se exclusivamente aos cursos da escola à qual o técnico está vinculado (não tem acesso global ao politécnico), assim como exclusivamente ao estabelecimento de ensino (escola, IP ou universidade) pelo qual é responsável.**
 
 **Interações**
 - **Diretas:** consulta e análise dos registos de assiduidade (UC4) e análise dos dados de utilização do sistema (UC5).
