@@ -3,7 +3,7 @@
 **Projeto:** Ferramenta de Gestão de Presenças em Contexto Letivo  
 **Unidade curricular:** Desenvolvimento de Aplicações Web  
 **Fase:** Análise e Desenho  
-**Estado:** Revisto (v2.1) — a validar pelo grupo
+**Estado:** Revisto (v2.1) e validado
 
 ---
 
