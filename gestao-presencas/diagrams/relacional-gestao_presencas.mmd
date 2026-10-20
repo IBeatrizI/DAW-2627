@@ -1,0 +1,98 @@
+erDiagram
+    %% Modelo relacional do projeto DAW - Laravel e MySQL
+    %% PK: chave primaria | FK: chave estrangeira | UK: unica simples
+    %% As chaves unicas compostas sao descritas no documento 03.
+    SALA {
+        INT id_sala PK
+        INT id_escola FK
+        VARCHAR nome
+        VARCHAR edificio "permite NULL"
+        VARCHAR tipo
+        INT capacidade "permite NULL"
+        TIMESTAMP created_at
+    }
+    UTILIZADOR {
+        INT id_utilizador PK
+        INT id_perfil FK
+        INT id_escola FK "permite NULL"
+        VARCHAR nome
+        VARCHAR email UK
+        VARCHAR password_hash
+        BOOLEAN ativo
+        DATETIME ultimo_acesso "permite NULL"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    TURMA {
+        INT id_turma PK
+        INT id_uc FK
+        INT id_ano_letivo FK
+        VARCHAR nome
+        TIMESTAMP created_at
+    }
+    INSCRICAO {
+        INT id_inscricao PK
+        INT id_aluno FK
+        INT id_turma FK
+        DECIMAL nota_final "permite NULL"
+        ENUM resultado "permite NULL"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    PAUTA {
+        INT id_pauta PK
+        INT id_turma FK,UK
+        INT id_criada_por FK
+        TIMESTAMP created_at
+    }
+    SEMANA {
+        INT id_semana PK
+        INT id_pauta FK
+        TINYINT numero
+        ENUM estado
+        DATETIME data_encerramento "permite NULL"
+        INT id_encerrada_por FK "permite NULL"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    AULA {
+        INT id_aula PK
+        INT id_semana FK
+        INT id_sala FK
+        ENUM tipo
+        DATETIME data_hora_inicio
+        DATETIME data_hora_fim
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    PRESENCA {
+        INT id_presenca PK
+        INT id_aula FK
+        INT id_inscricao FK
+        ENUM situacao
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    HISTORICO_SEMANAL {
+        INT id_historico PK
+        INT id_semana FK,UK
+        INT total_aulas
+        INT total_presencas
+        INT total_ausencias
+        INT total_justificadas
+        INT total_registos
+        DECIMAL taxa_frequencia
+        TIMESTAMP created_at
+    }
+
+    %% RELACOES E CARDINALIDADES
+    TURMA ||--o{ INSCRICAO : "recebe"
+    TURMA ||--o| PAUTA : "tem"
+    UTILIZADOR ||--o{ PAUTA : "cria"
+    PAUTA ||--|{ SEMANA : "contém"
+    SEMANA ||--o{ AULA : "contém"
+    SALA ||--o{ AULA : "acolhe"
+    AULA ||--o{ PRESENCA : "regista"
+    INSCRICAO ||--o{ PRESENCA : "corresponde a"
+    SEMANA ||--o| HISTORICO_SEMANAL : "gera"
+    UTILIZADOR |o--o{ SEMANA : "encerra"

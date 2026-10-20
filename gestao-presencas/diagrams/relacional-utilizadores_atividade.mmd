@@ -1,0 +1,107 @@
+erDiagram
+    %% Modelo relacional do projeto DAW - Laravel e MySQL
+    %% PK: chave primaria | FK: chave estrangeira | UK: unica simples
+    %% As chaves unicas compostas sao descritas no documento 03.
+    ESCOLA {
+        INT id_escola PK
+        VARCHAR nome
+        VARCHAR sigla UK
+        VARCHAR morada "permite NULL"
+        TIMESTAMP created_at
+    }
+    UNIDADE_CURRICULAR {
+        INT id_uc PK
+        INT id_curso FK
+        VARCHAR codigo
+        VARCHAR sigla
+        VARCHAR nome
+        TINYINT ano_curricular
+        TEXT descricao "permite NULL"
+        TIMESTAMP created_at
+    }
+    ANO_LETIVO {
+        INT id_ano_letivo PK
+        VARCHAR nome UK
+        DATE data_inicio
+        DATE data_fim
+        BOOLEAN ativo
+        TIMESTAMP created_at
+    }
+    PERFIL {
+        INT id_perfil PK
+        VARCHAR codigo UK
+        VARCHAR nome
+        TIMESTAMP created_at
+    }
+    UTILIZADOR {
+        INT id_utilizador PK
+        INT id_perfil FK
+        INT id_escola FK "permite NULL"
+        VARCHAR nome
+        VARCHAR email UK
+        VARCHAR password_hash
+        BOOLEAN ativo
+        DATETIME ultimo_acesso "permite NULL"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    ATRIBUICAO_UC {
+        INT id_atribuicao PK
+        INT id_uc FK
+        INT id_ano_letivo FK
+        INT id_docente FK
+        BOOLEAN responsavel
+        TIMESTAMP created_at
+    }
+    PAUTA {
+        INT id_pauta PK
+        INT id_turma FK,UK
+        INT id_criada_por FK
+        TIMESTAMP created_at
+    }
+    SEMANA {
+        INT id_semana PK
+        INT id_pauta FK
+        TINYINT numero
+        ENUM estado
+        DATETIME data_encerramento "permite NULL"
+        INT id_encerrada_por FK "permite NULL"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+    FUNCIONALIDADE {
+        INT id_funcionalidade PK
+        VARCHAR codigo UK
+        VARCHAR nome
+        VARCHAR descricao "permite NULL"
+        TIMESTAMP created_at
+    }
+    LOG_ATIVIDADE {
+        BIGINT id_log PK
+        INT id_utilizador FK
+        INT id_funcionalidade FK
+        VARCHAR pagina
+        INT duracao_segundos "permite NULL"
+        TIMESTAMP created_at
+    }
+    REGISTO_AUDITORIA {
+        BIGINT id_auditoria PK
+        INT id_utilizador FK "permite NULL"
+        VARCHAR acao
+        TEXT detalhes "permite NULL"
+        VARCHAR ip_origem "permite NULL"
+        TIMESTAMP created_at
+    }
+
+    %% RELACOES E CARDINALIDADES
+    ESCOLA |o--o{ UTILIZADOR : "tem associado"
+    PERFIL ||--o{ UTILIZADOR : "classifica"
+    UNIDADE_CURRICULAR ||--o{ ATRIBUICAO_UC : "é objeto de"
+    ANO_LETIVO ||--o{ ATRIBUICAO_UC : "contextualiza"
+    UTILIZADOR ||--o{ ATRIBUICAO_UC : "recebe atribuição"
+    UTILIZADOR ||--o{ PAUTA : "cria"
+    PAUTA ||--|{ SEMANA : "contém"
+    UTILIZADOR |o--o{ SEMANA : "encerra"
+    UTILIZADOR ||--o{ LOG_ATIVIDADE : "produz"
+    FUNCIONALIDADE ||--o{ LOG_ATIVIDADE : "classifica"
+    UTILIZADOR |o--o{ REGISTO_AUDITORIA : "origina"

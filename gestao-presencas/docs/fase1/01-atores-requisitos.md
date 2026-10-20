@@ -3,8 +3,7 @@
 **Projeto:** Ferramenta de Gestão de Presenças em Contexto Letivo  
 **Unidade curricular:** Desenvolvimento de Aplicações Web  
 **Fase:** Análise e Desenho  
-**Estado:** Revisto (v2.1) e validado
-
+**Estado:** Revisão integrada v3.1 — coerência de atribuições e diagramas
 ---
 
 ## 1. Objetivo
@@ -16,27 +15,28 @@ Este documento caracteriza os quatro atores do sistema, define as regras de neg�
 ### 2.1. Docente
 
 **Tipo:** Ator principal  
-**Casos de uso:** UC1, UC2, UC3 e UC4 (este último limitado às suas unidades curriculares)
+**Casos de uso:** UC1, UC2, UC3 e UC4 (este último limitado às unidades curriculares e aos anos letivos atribuídos)
 
 **Descrição:**  
-Docente responsável por uma ou mais unidades curriculares (UC), encarregado de criar as pautas de presenças, registar a assiduidade dos alunos e encerrar os registos semanais. Pode ainda analisar a assiduidade das UC pelas quais é responsável, em formato numérico e gráfico.
+Docente atribuído a uma ou mais unidades curriculares (UC), individualmente ou em conjunto com outros docentes, encarregado de criar as pautas de presenças, registar a assiduidade dos alunos e encerrar os registos semanais. Pode ainda analisar a assiduidade das UC a que está atribuído, em formato numérico e gráfico.
 
 **Objetivos**
-- Criar pautas para as UC pelas quais é responsável.
+- Criar pautas para as UC a que está atribuído no respetivo ano letivo.
 - Organizar as aulas das 15 semanas letivas e associar as respetivas salas.
 - Registar a situação de cada aluno em cada aula (presente, ausente ou falta justificada).
 - Rever os registos e encerrar cada semana letiva.
 - Consultar a evolução da assiduidade das suas UC ao longo das 15 semanas.
 
 **Permissões**
-- Consultar as UC pelas quais é responsável.
+- Consultar as UC a que está atribuído no respetivo ano letivo.
 - Criar e consultar as respetivas pautas.
 - Registar e corrigir presenças enquanto a semana estiver aberta.
 - Rever e confirmar os registos antes do encerramento semanal.
 - Consultar indicadores de assiduidade (UC4) exclusivamente das UC que lhe estão atribuídas.
 
 **Restrições**
-- Só gere as pautas das UC que lhe estão atribuídas.
+- Só gere as pautas de UC e anos letivos para os quais possui atribuição importada. Nesta versão, essa atribuição autoriza o docente a gerir todas as turmas da respetiva UC e ano letivo.
+- Não pode criar ou alterar escolas, cursos, UC, anos letivos, turmas, inscrições ou alunos, que são dados académicos importados.
 - Não pode alterar os registos de uma semana encerrada (RN05).
 - Não acede a funcionalidades reservadas a outros perfis, nomeadamente ao painel de *Data Analytics* (UC5).
 
@@ -67,7 +67,7 @@ Utilizador responsável pela consulta e análise dos dados de assiduidade da esc
 
 **Restrições**
 - Não altera os registos de presenças efetuados pelos docentes.
-- Os indicadores de assiduidade baseiam-se exclusivamente nos históricos semanais produzidos pelo UC3.
+- Os indicadores agregados de evolução semanal baseiam-se nos históricos produzidos no UC3. Para relacionar a assiduidade individual com o sucesso académico (UC4), é necessário cruzar as presenças de semanas encerradas com as inscrições e respetivos resultados importados (RN08).
 - O acesso aos dados limita-se à escola a que o técnico está vinculado (RN06 e RNF04).
 
 **Interações**
@@ -153,9 +153,12 @@ As regras seguintes são transversais aos casos de uso e são referenciadas nas 
 | RN03 | Situações de assiduidade | Em cada aula, cada aluno tem uma de três situações: presente, ausente ou falta justificada. |
 | RN04 | Taxa de frequência | Taxa de frequência da semana = presenças ÷ total de registos (presenças + ausências + faltas justificadas) × 100. A falta justificada conta no total como falta, mas é contabilizada separadamente no histórico. |
 | RN05 | Encerramento semanal | Uma semana só pode ser encerrada se todas as aulas dessa semana tiverem situação registada para todos os alunos. O encerramento é absoluto e irreversível: não existem correções excecionais. |
-| RN06 | Âmbito de acesso | Docente: apenas as suas UC. Técnico do Gabinete de Qualidade e diretor de escola: apenas a sua escola. Membro da Presidência: todas as escolas. O âmbito é verificado no servidor (API) em todos os pedidos. |
-| RN07 | Dados mestre | Escolas, cursos, UC, turmas, salas, alunos, inscrições, resultados finais e contas de utilizador são carregados previamente (importação ou *seed*). A sua gestão está fora do âmbito desta fase. |
+| RN06 | Âmbito de acesso | Docente: apenas as suas UC nos anos letivos atribuídos. Técnico do Gabinete de Qualidade e diretor de escola: apenas a sua escola. Membro da Presidência: todas as escolas. O âmbito é verificado no servidor (API) em todos os pedidos. |
+| RN07 | Dados académicos importados | Escolas, cursos, UC, anos letivos, turmas, alunos, inscrições, atribuições docentes e resultados académicos disponíveis são importados antes de serem usados. As salas e as contas são provisionadas/importadas de forma controlada. Os docentes não criam nem alteram dados académicos de referência; apenas criam pautas e as respetivas aulas (UC1). O carregamento técnico de demonstração por *seeders* não constitui uma funcionalidade para docentes. |
 | RN08 | Sucesso académico | O resultado final de cada inscrição (nota ou aprovação) é um dado mestre importado e é usado no UC4 para relacionar a taxa de frequência com o sucesso académico. |
+| RN09 | Docência partilhada | Uma UC pode ter um ou vários docentes no mesmo ano letivo. Cada docente tem uma atribuição única por UC/ano; existe, quando aplicável, um docente responsável, sem impedir a colaboração dos restantes. A autorização do UC1 ao UC4 depende da atribuição à UC **e ao ano letivo**. |
+
+**Distinção entre importação e UC1:** importar uma turma e as inscrições não é uma operação do docente. No UC1, o docente seleciona a turma já existente e cria a pauta de assiduidade e o seu planeamento de aulas. A importação constitui uma pré-condição técnica do processo, não um sexto caso de uso.
 
 ## 5. Requisitos não funcionais
 
@@ -172,7 +175,7 @@ As regras seguintes são transversais aos casos de uso e são referenciadas nas 
 | RNF09 | Fiabilidade | O sistema deve reduzir o risco de perda de dados durante a criação, edição e encerramento das pautas, nomeadamente em caso de expiração de sessão. | Grupo |
 | RNF10 | Privacidade | O acesso aos dados pessoais e académicos deve limitar-se às necessidades e permissões de cada perfil. | Grupo |
 | RNF11 | Recolha de métricas | O sistema deve recolher automaticamente dados de utilização (páginas visualizadas, duração das visitas, utilizador e funcionalidade utilizada, de que decorrem o perfil e a escola) para suportar o UC5. | Enunciado |
-| RNF12 | Arquitetura e manutenibilidade | A solução deve seguir a arquitetura MVC e disponibilizar uma API REST para os dados e regras de negócio. | Enunciado |
+| RNF12 | Arquitetura e manutenibilidade | A solução usa Laravel (PHP), MVC com vistas Blade, API REST para dados e regras de negócio e MySQL como SGBD. | Enunciado + decisão do grupo |
 | RNF13 | Rastreabilidade | O sistema deve registar as operações críticas (encerramento de semanas, tentativas de acesso fora do âmbito e autenticações falhadas), indicando o utilizador, a data e a hora. | Grupo |
 
 ## 6. Decisões de projeto
@@ -188,12 +191,15 @@ As regras seguintes são transversais aos casos de uso e são referenciadas nas 
 | D7 | Limites de desempenho: 500 ms na API e 2 s nas vistas. | Requisitos mensuráveis e verificáveis na fase de implementação (RNF08). |
 | D8 | Palavras-passe com *hashing*, sessões com *timeout* de 30 minutos e registo de operações críticas. | Responde ao risco do bloqueio irreversível e à rastreabilidade prometida na proposta (RNF03 e RNF13). |
 | D9 | Compatibilidade com Chrome, Firefox, Safari e Edge. | Cobre os navegadores modernos mais usados em computadores e dispositivos móveis (RNF07). |
-| D10 | Os dados mestre e as contas de utilizador são carregados previamente. | Mantém o foco nos quatro casos de uso do domínio e no UC5 (RN07). |
+| D10 | Os dados académicos e as atribuições docentes são importados, não criados na interface do docente. | Mantém o foco nos quatro casos de uso do domínio e no UC5 (RN07). |
+| D11 | Vários docentes podem ter uma UC no mesmo ano letivo; um deles pode assumir a responsabilidade. | Reflete a lecionação conjunta no ensino superior, sem duplicar a UC (RN09). |
+| D12 | O modelo não tem atributo `semestre`. | Não é necessário para os cinco casos de uso definidos; o ano letivo e o ano curricular respondem aos filtros pedidos. |
+| D13 | A implementação utilizará Laravel, Blade/MVC, API REST e MySQL. | Fixa a alternativa tecnológica admitida no enunciado para a fase 2. |
 
 ## 7. Texto de síntese
 
 A ferramenta de gestão de presenças em contexto letivo contempla quatro atores: Docente, Técnico do Gabinete de Qualidade, Dirigente e Aluno. Cada ator desempenha um papel específico, de acordo com as suas responsabilidades e com o âmbito de dados que lhe está atribuído.
 
-O Docente é responsável pela criação das pautas, pelo registo da assiduidade dos alunos e pelo encerramento semanal dos registos, podendo também analisar a assiduidade das suas unidades curriculares. O Técnico do Gabinete de Qualidade consulta e analisa os históricos de assiduidade da sua escola e acompanha as estatísticas de utilização da plataforma. O Dirigente, seja diretor de escola ou membro da Presidência, consulta os indicadores de assiduidade para apoiar decisões de gestão académica, nomeadamente o planeamento do número de turmas. O Aluno participa indiretamente no sistema, através da sua inclusão nas pautas e do registo da respetiva situação de assiduidade pelo docente.
+O Docente, individualmente ou em colaboração com outros docentes atribuídos à mesma UC e ano letivo, é responsável pela criação das pautas, pelo registo da assiduidade dos alunos e pelo encerramento semanal dos registos, podendo também analisar a assiduidade das suas unidades curriculares. O Técnico do Gabinete de Qualidade consulta e analisa os históricos de assiduidade da sua escola e acompanha as estatísticas de utilização da plataforma. O Dirigente, seja diretor de escola ou membro da Presidência, consulta os indicadores de assiduidade para apoiar decisões de gestão académica, nomeadamente o planeamento do número de turmas. O Aluno participa indiretamente no sistema, através da sua inclusão nas pautas e do registo da respetiva situação de assiduidade pelo docente.
 
 A aplicação disponibiliza uma interface responsiva, adequada a computadores, tablets e smartphones, assegura a autenticação dos utilizadores, limita o acesso aos dados de acordo com o perfil e suporta múltiplas escolas, cursos, unidades curriculares, turmas, anos curriculares e anos letivos. Mantém ainda a integridade e a rastreabilidade dos registos e recolhe dados de utilização para a componente de *Data Analytics*.
