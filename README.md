@@ -34,20 +34,20 @@ gestao-presencas/
 │   └── fase2/                # Espaço reservado para documentação técnica da Implementação
 ├── diagrams/                 # Diagramas técnicos em formato código ou texto
 │   ├── casos-de-uso.png
-    │   ├── modelo-er-conceptual.drawio
-    │   ├── modelo-er-conceptual.dot
-    │   ├── modelo-er-conceptual.png
-    │   ├── modelo-er-conceptual.svg
-    │   ├── modelo-relacional-completo.mmd
-    │   ├── modelo-relacional-completo.dot
-    │   ├── modelo-relacional-completo.png
-    │   ├── modelo-relacional-completo.svg
-    │   ├── er-academica.*
-    │   ├── er-gestao_presencas.*
-    │   ├── er-utilizadores_atividade.*
-    │   ├── relacional-academica.*
-    │   ├── relacional-gestao_presencas.*
-    │   └── relacional-utilizadores_atividade.*
+│   ├── modelo-er-conceptual.drawio
+│   ├── modelo-er-conceptual.dot
+│   ├── modelo-er-conceptual.png
+│   ├── modelo-er-conceptual.svg
+│   ├── modelo-relacional-completo.mmd
+│   ├── modelo-relacional-completo.dot
+│   ├── modelo-relacional-completo.png
+│   ├── modelo-relacional-completo.svg
+│   ├── er-academica.*
+│   ├── er-gestao_presencas.*
+│   ├── er-utilizadores_atividade.*
+│   ├── relacional-academica.*
+│   ├── relacional-gestao_presencas.*
+│   └── relacional-utilizadores_atividade.*
 ├── prototypes/               # Desenho de UI/UX
 │   ├── wireframes/           # Esboços de baixa/média fidelidade dos ecrãs (Desktop/Mobile)
 │   └── storyboards/          # Esquemas do fluxo de navegação entre os ecrãs
