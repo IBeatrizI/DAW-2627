@@ -2,7 +2,7 @@
 
 # Ferramenta de Gestão de Presenças em Contexto Letivo
 
-Projeto desenvolvido no âmbito da unidade curricular de **Desenvolvimento de Aplicações Web (DAW)** do Instituto Politécnico de Beja (Ano Letivo 2026/2027).
+Projeto desenvolvido no âmbito da unidade curricular de **Desenvolvimento de Aplicações Web (DAW)** da **Universidade Politécnica de Beja**, no ano letivo **2026/2027**.
 
 ## 📌 Descrição do Projeto
 
@@ -30,12 +30,24 @@ gestao-presencas/
 │   │   ├── 01-atores-requisitos.md  # Caracterização dos atores e levantamento de requisitos
 │   │   ├── 02-casos-de-uso.md       # Tabelas de especificação UML detalhadas (UC1 a UC5)
 │   │   ├── 03-base-de-dados.md      # Dicionário de dados, entidades e relações
-│   │   └── 04-decisoes-projeto.md   # Justificações sobre arquitetura e stack tecnológica
+│   │  
 │   └── fase2/                # Espaço reservado para documentação técnica da Implementação
 ├── diagrams/                 # Diagramas técnicos em formato código ou texto
-│   ├── casos-de-uso.puml     # Diagrama de Casos de Uso (PlantUML)
-│   ├── modelo-er.puml        # Modelo Entidade-Relacionamento (PlantUML)
-│   └── modelo-relacional.md  # Especificação do Modelo Lógico Relacional (tabelas e chaves)
+│   ├── casos-de-uso.png
+    │   ├── modelo-er-conceptual.drawio
+    │   ├── modelo-er-conceptual.dot
+    │   ├── modelo-er-conceptual.png
+    │   ├── modelo-er-conceptual.svg
+    │   ├── modelo-relacional-completo.mmd
+    │   ├── modelo-relacional-completo.dot
+    │   ├── modelo-relacional-completo.png
+    │   ├── modelo-relacional-completo.svg
+    │   ├── er-academica.*
+    │   ├── er-gestao_presencas.*
+    │   ├── er-utilizadores_atividade.*
+    │   ├── relacional-academica.*
+    │   ├── relacional-gestao_presencas.*
+    │   └── relacional-utilizadores_atividade.*
 ├── prototypes/               # Desenho de UI/UX
 │   ├── wireframes/           # Esboços de baixa/média fidelidade dos ecrãs (Desktop/Mobile)
 │   └── storyboards/          # Esquemas do fluxo de navegação entre os ecrãs
@@ -43,6 +55,7 @@ gestao-presencas/
 │   └── README.md             # Notas ou links para o relatório oficial (ex: Overleaf/LaTeX)
 └── .gitignore                # Ficheiros temporários e pastas a serem ignorados pelo Git
 ```
+> Na pasta `diagrams/`, o símbolo `.*` representa os vários formatos disponíveis para as vistas complementares, nomeadamente `.dot`, `.png`, `.svg` e, no caso das vistas relacionais, `.mmd`. É uma abreviação da árvore acima e não o nome literal de um ficheiro.
 
 ## 👥 Equipa
 
