@@ -1,0 +1,78 @@
+erDiagram
+    %% Modelo relacional do projeto DAW - Laravel e MySQL
+    %% PK: chave primaria | FK: chave estrangeira | UK: unica simples
+    %% As chaves unicas compostas sao descritas no documento 03.
+    ESCOLA {
+        INT id_escola PK
+        VARCHAR nome
+        VARCHAR sigla UK
+        VARCHAR morada "permite NULL"
+        TIMESTAMP created_at
+    }
+    CURSO {
+        INT id_curso PK
+        INT id_escola FK
+        VARCHAR nome
+        VARCHAR sigla
+        TEXT descricao "permite NULL"
+        TIMESTAMP created_at
+    }
+    UNIDADE_CURRICULAR {
+        INT id_uc PK
+        INT id_curso FK
+        VARCHAR codigo
+        VARCHAR sigla
+        VARCHAR nome
+        TINYINT ano_curricular
+        TEXT descricao "permite NULL"
+        TIMESTAMP created_at
+    }
+    ANO_LETIVO {
+        INT id_ano_letivo PK
+        VARCHAR nome UK
+        DATE data_inicio
+        DATE data_fim
+        BOOLEAN ativo
+        TIMESTAMP created_at
+    }
+    SALA {
+        INT id_sala PK
+        INT id_escola FK
+        VARCHAR nome
+        VARCHAR edificio "permite NULL"
+        VARCHAR tipo
+        INT capacidade "permite NULL"
+        TIMESTAMP created_at
+    }
+    ALUNO {
+        INT id_aluno PK
+        VARCHAR numero UK
+        VARCHAR nome
+        VARCHAR email UK "permite NULL"
+        TIMESTAMP created_at
+    }
+    TURMA {
+        INT id_turma PK
+        INT id_uc FK
+        INT id_ano_letivo FK
+        VARCHAR nome
+        TIMESTAMP created_at
+    }
+    INSCRICAO {
+        INT id_inscricao PK
+        INT id_aluno FK
+        INT id_turma FK
+        DECIMAL nota_final "permite NULL"
+        ENUM resultado "permite NULL"
+        TIMESTAMP created_at
+        TIMESTAMP updated_at
+    }
+
+    %% RELACOES E CARDINALIDADES
+    ESCOLA ||--o{ CURSO : "oferece"
+    ESCOLA ||--o{ SALA : "dispõe de"
+    CURSO ||--o{ UNIDADE_CURRICULAR : "inclui"
+    UNIDADE_CURRICULAR ||--o{ TURMA : "organiza"
+    ANO_LETIVO ||--o{ TURMA : "enquadra"
+    ALUNO ||--o{ INSCRICAO : "efetua"
+    TURMA ||--o{ INSCRICAO : "recebe"
