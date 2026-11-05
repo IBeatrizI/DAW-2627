@@ -3,11 +3,9 @@
 **Projeto:** Ferramenta de Gestão de Presenças em Contexto Letivo  
 **Unidade curricular:** Desenvolvimento de Aplicações Web  
 **Fase:** Análise e Desenho  
-**Estado:** Revisão integrada v1.3 — diagrama E/R em Draw.io e modelo relacional em Mermaid
+**Estado:** Modelo de 19 tabelas / 24 relações; imagens finais do E/R e relacional de 05/11/2026
 
 ---
-
-**Organização dos ficheiros:** este Markdown usa ligações relativas para a pasta `../../diagrams/`. Ao colocá-lo no repositório, conservar o caminho `gestao-presencas/docs/fase1/03-base-de-dados.md` e a pasta `gestao-presencas/diagrams/` fornecida no ZIP. O ficheiro Markdown pode ser lido isoladamente, mas as imagens e ligações só funcionam se a estrutura de pastas for preservada.
 
 ## 1. Objetivo
 
@@ -47,7 +45,7 @@ A origem e o formato concreto dos ficheiros de importação ainda não estão de
 
 ## 3. Diagrama Entidade-Relação (E/R conceptual)
 
-![Modelo Entidade-Relação (E/R) conceptual — entidades em retângulos, relações em losangos e cardinalidades](../../diagrams/modelo-er-conceptual.svg)
+![Modelo Entidade-Relação (E/R) conceptual — imagem final](../../diagrams/modelo-er-conceptual.png)
 
 **Ficheiros do diagrama completo:** [SVG ampliável](../../diagrams/modelo-er-conceptual.svg) · [PNG](../../diagrams/modelo-er-conceptual.png) · **[ficheiro Draw.io editável](../../diagrams/modelo-er-conceptual.drawio)**. O Draw.io, com quatro páginas, é a **fonte de referência para o E/R conceptual**: alterações às entidades, relações ou cardinalidades devem ser feitas nesse ficheiro e refletidas nas exportações SVG/PNG. A versão [Graphviz DOT](../../diagrams/modelo-er-conceptual.dot) é uma representação alternativa e não reproduz necessariamente o posicionamento do Draw.io.
 
@@ -82,7 +80,7 @@ Para a leitura e apresentação, o modelo completo também está repartido em vi
 | TURMA — PAUTA | 1:0..1 | A turma importada pode ainda não ter pauta, mas nunca tem duas (RN01). |
 | UTILIZADOR — PAUTA | 1:N | O criador da pauta é um docente autorizado para essa UC e esse ano letivo. |
 | PAUTA — SEMANA | 1:15 | A geração de pauta cria as quinze semanas do período letivo (RN02). |
-| SEMANA — AULA | 1:N | As aulas são definidas na pauta para cada semana. |
+| SEMANA — AULA | 1:0..N | As semanas são criadas inicialmente sem aulas e podem receber várias aulas posteriormente. |
 | SALA — AULA | 1:N | A mesma sala pode acolher várias aulas, sem sobreposição de horários. |
 | AULA — PRESENCA — INSCRICAO | Duas associações 1:N | Cada presença associa uma aula a uma inscrição. Uma aula inclui várias inscrições e uma inscrição participa em várias aulas, mas cada par aula–inscrição só pode ter um registo. |
 | SEMANA — HISTORICO_SEMANAL | 1:0..1 | O histórico só existe depois do encerramento e não pode duplicar-se (RN05). |
@@ -107,7 +105,7 @@ O modelo lógico relacional contém as mesmas **19 tabelas** e as **24 ligaçõe
 
 **Diagrama relacional completo:** [SVG ampliável](../../diagrams/modelo-relacional-completo.svg) · [PNG](../../diagrams/modelo-relacional-completo.png) · **[código Mermaid editável](../../diagrams/modelo-relacional-completo.mmd)** · [fonte Graphviz DOT](../../diagrams/modelo-relacional-completo.dot). O Mermaid descreve o **esquema e as cardinalidades**; a disposição das caixas é produzida automaticamente. Para uma consulta rápida, utilizam-se as vistas funcionais da secção 4.1.1.
 
-![Modelo lógico relacional completo com campos, tipos e chaves](../../diagrams/modelo-relacional-completo.svg)
+![Modelo lógico relacional completo — imagem final](../../diagrams/modelo-relacional-completo.png)
 
 A versão seguinte em Mermaid faz parte do próprio documento Markdown e pode ser editada ou visualizada em plataformas compatíveis:
 
@@ -984,3 +982,14 @@ Para garantir a consistência e a fiabilidade das métricas do UC5, devem ser co
 3. **Âmbito de acesso às turmas:** este modelo assume que a atribuição à UC e ao ano letivo é suficiente para autorizar o docente a gerir as pautas dessa UC. Se a instituição exigir que cada docente só possa gerir turmas específicas, deve ser acrescentada uma tabela de atribuição docente–turma.
 4. **Semestre:** não é modelado nesta fase, por não existir um requisito identificado que o exija.
 5. **SGBD:** Laravel com MySQL, conforme a decisão do projeto.
+
+
+## 8. Alinhamento com as imagens finais
+
+O ZIP de imagens finais de 05/11/2026 fornece a versão gráfica de referência para o relatório e o GitHub:
+
+- [Diagrama UML (PNG final)](../../diagrams/casos-de-uso.png)
+- [Modelo E/R conceptual (PNG final)](../../diagrams/modelo-er-conceptual.png)
+- [Modelo relacional completo (PNG final)](../../diagrams/modelo-relacional-completo.png)
+
+As **19 tabelas**, as chaves e as **24 relações** da versão do relatório mantêm-se. A regra de negócio `PAUTA — SEMANA` é de 15 semanas por pauta; `SEMANA — AULA` admite **zero ou várias** aulas; o `historico_semanal` pertence à **semana** e só existe após o encerramento. O registo de `presenca` liga cada `aula` à `inscricao` do aluno.

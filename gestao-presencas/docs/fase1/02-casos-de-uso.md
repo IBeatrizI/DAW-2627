@@ -3,7 +3,7 @@
 **Projeto:** Ferramenta de Gestão de Presenças em Contexto Letivo  
 **Unidade curricular:** Desenvolvimento de Aplicações Web  
 **Fase:** Análise e Desenho  
-**Estado:** Revisão integrada v0.3
+**Estado:** Sincronizado com o relatório entregue e os protótipos finais
 
 ---
 
@@ -23,7 +23,7 @@ O diagrama UML representa **os cinco casos de uso e os respetivos atores com int
 
 | UC | Designação | Ator principal | Entrada | Resultado |
 |---|---|---|---|---|
-| UC1 | Criação da pauta de presenças | Docente | UC, turma, ano letivo e alunos inscritos | Pauta com alunos e aulas |
+| UC1 | Criação da pauta de presenças | Docente | UC, turma, ano letivo e alunos inscritos | Pauta com 15 semanas inicialmente sem aulas; aulas adicionadas depois |
 | UC2 | Registo de presenças na pauta | Docente | Pauta criada no UC1 | Presenças por aula |
 | UC3 | Encerramento e histórico semanal | Docente | Presenças registadas no UC2 | Histórico semanal de assiduidade |
 | UC4 | Consulta e análise da assiduidade | Docente, Técnico do Gabinete de Qualidade e Dirigente | Históricos semanais do UC3 | Indicadores numéricos e gráficos |
@@ -34,15 +34,13 @@ O diagrama UML representa **os cinco casos de uso e os respetivos atores com int
 ### UC1: Criação da pauta de presenças
 
 | Campo | Especificação |
-| :---- | :---- |
-| **Identificador e nome** | **UC1** — Criação da pauta de presenças |
-| **Atores** | Principal: Docente. Indireto: Aluno (incluído na pauta através dos dados de inscrição). |
-| **Descrição** | O docente seleciona uma UC/ano letivo e uma **turma previamente importada** à qual tem acesso; cria a respetiva pauta e planeia as aulas das 15 semanas letivas, com as salas disponibilizadas, obtendo automaticamente os alunos **já inscritos na turma**. O docente não cria turmas nem inscrições. |
-| **Requisitos associados** | RN01, RN02, RN06, RN07, RN09, RNF03, RNF06, RNF08, RNF13 |
-| **Pré-condições** | 1. O docente tem sessão ativa e não expirada.<br>2. Existe atribuição importada do docente à UC **e ao ano letivo** da turma (RN09).<br>3. A turma, os alunos, as inscrições e as salas disponíveis já estão carregados no sistema (RN07). |
-| **Pós-condições** | É criada uma pauta associada à UC, à turma e ao ano letivo, com 15 semanas, as respetivas aulas e a lista de alunos inscritos. A pauta serve de entrada ao UC2. |
-| **Fluxo principal** | 1. O docente acede a "Gestão de Pautas" e seleciona "Criar nova".<br>2. O sistema apresenta as UC e anos letivos atribuídos ao docente.<br>3. O docente seleciona a UC, o ano letivo e uma das turmas já importadas e autorizadas; o sistema apresenta automaticamente o ano curricular da UC.<br>4. O sistema apresenta um formulário para planear as 15 semanas letivas.<br>5. Para cada semana, o docente define as aulas (data, hora de início e fim, tipo e sala).<br>6. O sistema valida que não há conflitos de sala nem sobreposição de horários.<br>7. O docente seleciona "Gerar pauta".<br>8. O sistema **consulta as inscrições já importadas**, cria a pauta e apresenta uma mensagem de sucesso. |
-| **Fluxos alternativos e exceções** | **3a. Já existe pauta para a turma escolhida:** o sistema impede a criação e oferece um atalho para a pauta existente.<br>**3b. A turma não tem alunos inscritos:** o sistema informa o docente e não permite gerar a pauta.<br>**6a. A sala já está ocupada no mesmo horário:** o sistema assinala o conflito e pede ao docente que escolha outra sala ou outro horário.<br>**8a. A sessão expira antes de gerar a pauta:** o sistema pede nova autenticação e preserva os dados já preenchidos no formulário. |
+|:--|:--|
+| **Ator principal** | Docente. O Aluno é apenas interveniente indireto. |
+| **Objetivo** | Criar uma pauta para uma turma atribuída ao docente e permitir o planeamento das aulas ao longo das 15 semanas. |
+| **Pré-condições** | O docente está autenticado; a UC, turma, ano letivo, alunos, inscrições e atribuições docentes existem como dados académicos previamente importados. |
+| **Fluxo principal** | 1. Aceder a «Gestão de pautas» e selecionar «Nova pauta».<br>2. Abrir o modal de criação.<br>3. Selecionar UC, ano letivo e turma já importados.<br>4. Validar e criar a pauta com **15 semanas inicialmente sem aulas**.<br>5. Abrir a pauta no calendário semanal.<br>6. Selecionar «Adicionar aula» e preencher data, horário, tipo e sala.<br>7. Validar e adicionar a aula ao calendário. |
+| **Fluxos alternativos** | **3a.** Já existe uma pauta para a turma: impedir a duplicação.<br>**6a.** Conflito de horário ou sala: apresentar aviso no modal e **preservar os campos preenchidos**.<br>**6b.** A semana está encerrada: impedir o planeamento. |
+| **Pós-condições** | A pauta está disponível para consulta e planeamento, com 15 semanas e as aulas que tenham sido adicionadas. |
 
 ---
 
@@ -104,3 +102,10 @@ O diagrama UML representa **os cinco casos de uso e os respetivos atores com int
 | **Fluxo automático de recolha** | Em cada navegação autenticada, o sistema inicia um registo da página e funcionalidade com instante de entrada; a duração só é estimada após mudança de página, saída ou sinal de atividade da sessão (com limite de inatividade). Uma requisição HTTP isolada não permite conhecer, por si só, o tempo de permanência (RNF11). |
 | **Fluxo principal** | 1. O técnico acede a "Data Analytics — Utilização do Sistema".<br>2. Seleciona o período de análise (por exemplo, dia, semana ou mês).<br>3. O sistema filtra os registos de atividade pela escola do técnico (RN06).<br>4. O sistema apresenta as páginas mais visualizadas, a duração média das visitas, o número de utilizadores ativos por perfil e as funcionalidades mais utilizadas, em tabelas e gráficos. |
 | **Fluxos alternativos e exceções** | **3a. Não existem registos no período selecionado:** o sistema apresenta uma mensagem informativa.<br>**4a. Falha na obtenção dos registos de atividade:** o sistema informa que as métricas não estão disponíveis e regista a falha. |
+
+
+## 4. Adaptação aos wireframes finais (05/11/2026)
+
+Os artefactos finais dos [cinco UC](04-prototipos.md) permitem observar, além dos fluxos normais, estados e validações: gravação de presenças e confirmação no UC2, edição de aula como operação opcional e eliminação bloqueada; resumo e confirmação do encerramento no UC3; diferentes âmbitos de consulta no UC4; consulta mensal, mudança do período e ausência de dados no UC5.
+
+**Nota de rastreabilidade:** as imagens são uma revisão visual da fase de desenho. Não demonstram uma aplicação funcional. O modelo de dados correspondente está documentado em [03 — Base de dados](03-base-de-dados.md), e os perfis em [05 — Perfis e permissões](05-perfis-permissoes.md).

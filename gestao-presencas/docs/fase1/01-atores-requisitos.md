@@ -3,7 +3,7 @@
 **Projeto:** Ferramenta de Gestão de Presenças em Contexto Letivo  
 **Unidade curricular:** Desenvolvimento de Aplicações Web  
 **Fase:** Análise e Desenho  
-**Estado:** Revisão integrada v3.1 — coerência de atribuições e diagramas
+**Estado:** Sincronizado com o relatório entregue (Fase 1)
 ---
 
 ## 1. Objetivo
@@ -149,10 +149,10 @@ As regras seguintes são transversais aos casos de uso e são referenciadas nas 
 | ID | Regra | Descrição |
 |---|---|---|
 | RN01 | Estrutura da pauta | Cada pauta está associada a uma turma, que identifica a UC e o ano letivo (o ano curricular decorre da UC). Só pode existir uma pauta por turma. |
-| RN02 | Estrutura das aulas | Uma pauta tem 15 semanas letivas. Cada semana tem uma ou mais aulas, definidas por data, hora de início, hora de fim, tipo (T, TP ou PL) e sala. |
-| RN03 | Situações de assiduidade | Em cada aula, cada aluno tem uma de três situações: presente, ausente ou falta justificada. |
+| RN02 | Estrutura das aulas | Uma pauta é criada com 15 semanas letivas inicialmente sem aulas. O docente pode posteriormente adicionar zero ou várias aulas por semana, com data, hora de início, hora de fim, tipo (T, TP ou PL) e sala. Para encerrar uma semana é necessária pelo menos uma aula. |
+| RN03 | Situações de assiduidade | O docente regista presente, ausente ou falta justificada por aluno e aula. Enquanto a semana está aberta, é permitida a gravação parcial; «Por preencher» indica ausência de registo, não uma quarta situação persistida. |
 | RN04 | Taxa de frequência | Taxa de frequência da semana = presenças ÷ total de registos (presenças + ausências + faltas justificadas) × 100. A falta justificada conta no total como falta, mas é contabilizada separadamente no histórico. |
-| RN05 | Encerramento semanal | Uma semana só pode ser encerrada se todas as aulas dessa semana tiverem situação registada para todos os alunos. O encerramento é absoluto e irreversível: não existem correções excecionais. |
+| RN05 | Encerramento semanal | Só é possível encerrar uma semana aberta que contenha pelo menos uma aula e em que todas as inscrições esperadas tenham situação de assiduidade registada em todas as aulas. O docente confirma com a palavra-passe; o encerramento é irreversível e o histórico fica apenas para consulta. |
 | RN06 | Âmbito de acesso | Docente: apenas as suas UC nos anos letivos atribuídos. Técnico do Gabinete de Qualidade e diretor de escola: apenas a sua escola. Membro da Presidência: todas as escolas. O âmbito é verificado no servidor (API) em todos os pedidos. |
 | RN07 | Dados académicos importados | Escolas, cursos, UC, anos letivos, turmas, alunos, inscrições, atribuições docentes e resultados académicos disponíveis são importados antes de serem usados. As salas e as contas são provisionadas/importadas de forma controlada. Os docentes não criam nem alteram dados académicos de referência; apenas criam pautas e as respetivas aulas (UC1). O carregamento técnico de demonstração por *seeders* não constitui uma funcionalidade para docentes. |
 | RN08 | Sucesso académico | O resultado final de cada inscrição (nota ou aprovação) é um dado mestre importado e é usado no UC4 para relacionar a taxa de frequência com o sucesso académico. |
@@ -203,3 +203,14 @@ A ferramenta de gestão de presenças em contexto letivo contempla quatro atores
 O Docente, individualmente ou em colaboração com outros docentes atribuídos à mesma UC e ano letivo, é responsável pela criação das pautas, pelo registo da assiduidade dos alunos e pelo encerramento semanal dos registos, podendo também analisar a assiduidade das suas unidades curriculares. O Técnico do Gabinete de Qualidade consulta e analisa os históricos de assiduidade da sua escola e acompanha as estatísticas de utilização da plataforma. O Dirigente, seja diretor de escola ou membro da Presidência, consulta os indicadores de assiduidade para apoiar decisões de gestão académica, nomeadamente o planeamento do número de turmas. O Aluno participa indiretamente no sistema, através da sua inclusão nas pautas e do registo da respetiva situação de assiduidade pelo docente.
 
 A aplicação disponibiliza uma interface responsiva, adequada a computadores, tablets e smartphones, assegura a autenticação dos utilizadores, limita o acesso aos dados de acordo com o perfil e suporta múltiplas escolas, cursos, unidades curriculares, turmas, anos curriculares e anos letivos. Mantém ainda a integridade e a rastreabilidade dos registos e recolhe dados de utilização para a componente de *Data Analytics*.
+
+
+## 8. Correspondência com os protótipos finais
+
+A versão visual de referência encontra-se em [04 — Interfaces e storyboards](04-prototipos.md). Os estados finais de interface ilustram: criação da pauta **antes** do planeamento das aulas; aviso de conflito de horário mantendo o formulário; registo de presenças com gravação parcial; eliminação bloqueada de aulas com presenças; encerramento semanal por palavra-passe; acesso aos indicadores por perfil; e três estados distintos de consulta do UC5.
+
+**Regra complementar para UC2:** não se elimina uma aula que já possui presenças registadas. A verificação de sobreposição de intervalos de sala/horário na criação ou edição de aulas não fica garantida por uma FK simples.
+
+**Representação de intervenientes:** `utilizador` concentra os dados comuns de autenticação; `perfil` distingue `docente`, `tecnico_qualidade`, `diretor_escola` e `presidencia`. `atribuicao_uc` representa as atribuições dos docentes às UC. A validação das permissões efetivas compete à aplicação. Ver [05 — Perfis e permissões](05-perfis-permissoes.md).
+
+A documentação descreve uma **solução de análise e desenho**, não funcionalidades já implementadas ou testadas.
